@@ -4,22 +4,91 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Page title</title>
+    <style>
+      .container {
+        max-width: 1158px;
+        width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+        margin-right: auto;
+        margin-left: auto;
+      }
+      img {
+        display: block;
+        width: 270px;
+        height: 200px;
+        object-fit: cover;
+      }
+      .load-more {
+        display: none;
+      }
+
+      a {
+        text-decoration: none;
+      }
+      .gallery {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 10px;
+        row-gap: 10px;
+        justify-content: center;
+      }
+
+      .photo-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      p {
+        font-family: 'Roboto', 'sans-serif';
+        font-size: 14px;
+        color: #434455;
+        line-height: 1.5;
+        letter-spacing: 0.02em;
+        margin-bottom: 0;
+        padding-left: 0;
+      }
+      .info {
+        display: flex;
+        gap: 8px;
+      }
+      .info-item {
+        display: flex;
+        flex-direction: column;
+        margin-top: 0;
+      }
+
+      .card-link {
+        display: block;
+        transition: box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid #e7e9fc;
+      }
+      .card-link:hover,
+      .card-link:focus {
+        box-shadow: 0px 1px 6px rgba(46, 47, 66, 0.08),
+          0px 1px 1px rgba(46, 47, 66, 0.16), 0px 2px 1px rgba(46, 47, 66, 0.08);
+      }
+    </style>
     <link rel="stylesheet" href="./sass/index.scss" />
     <script type="module" src="./index.js"></script>
   </head>
   <body>
-    <form class="search-form" id="search-form">
-      <input
-        type="text"
-        name="searchQuery"
-        autocomplete="off"
-        placeholder="Search images..."
-      />
-      <button type="submit">Search</button>
-    </form>
+    <div class="container">
+      <form class="search-form" id="search-form">
+        <input
+          type="text"
+          name="searchQuery"
+          autocomplete="off"
+          placeholder="Search images..."
+        />
+        <button type="submit">Search</button>
+      </form>
 
-    <div class="gallery">
-      <!-- Картки зображень -->
+      <div class="gallery">
+        <!-- Картки зображень -->
+      </div>
+      <button type="button" class="load-more">Load more</button>
     </div>
   </body>
 </html>
