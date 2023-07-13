@@ -10,8 +10,6 @@ const perPage = 40;
 let currentPage = 1;
 let totalHits = 0;
 
-// Приховуємо кнопку "Load more" в початковому стані
-loadMoreButton.style.display = 'none';
 
 // Отримуємо зображення з API
 async function fetchImages(searchQuery) {
@@ -62,18 +60,19 @@ function displayImages(imagesArea) {
   lightbox.refresh();
 
 
-updateLoadMoreButton(imagesArea.length);
+updateLoadMoreButton(imagesArea.length, imagesArea);
+
 
 };
 
 
-  // Перевіряємо кількість отриманих зображень та загальну кількість зображень та новлює стан кнопки "Load more"
-function updateLoadMoreButton(imagesCount) {
-  if (imagesCount < perPage || currentPage * perPage >= totalHits) {
-    loadMoreButton.style.display = 'none';
+  // Перевіряємо кількість отриманих зображень та загальну кількість зображень та оновлює стан кнопки "Load more"
+function updateLoadMoreButton(imagesCount, imagesArea) {
+  if (imagesCount < perPage || currentPage * perPage >= totalHits || imagesArea.length === 0) {
+    this.loadMoreButton.style.display = 'none';
     displayNoImagesMessage();
   } else {
-    loadMoreButton.style.display = 'block';
+   loadMoreButton.style.display = 'block';
   }
 };
 
