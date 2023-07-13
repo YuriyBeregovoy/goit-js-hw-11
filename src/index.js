@@ -32,7 +32,7 @@ function fetchImages(searchQuery) {
 // Відображаємо зображення в галереї
 function displayImages(imagesArea) {
   // Очищаємо контейнер галереї
-  // imagesGalleryContainer.innerHTML = '';
+  imagesGalleryContainer.innerHTML = '';
 
   // Додаємо картки зображень до контейнера
   imagesArea.forEach(image => {
@@ -80,8 +80,8 @@ function displayImages(imagesArea) {
 imagesSearchForm.addEventListener('submit', evt => {
   evt.preventDefault();
 
-  const searchQuery = document.querySelector('.search-form input[name="searchQuery"]').value;
-
+  const searchQueryInput = document.querySelector('.search-form input[name="searchQuery"]');
+  const searchQuery = searchQueryInput.value.trim();
   if (searchQuery !== '') {
     // Приховуємо кнопку перед запитом
     loadMoreButton.style.display = 'none';
@@ -91,19 +91,23 @@ imagesSearchForm.addEventListener('submit', evt => {
         // Відображаємо зображення після отримання результатів
         displayImages(data.hits);
         loadMoreButton.style.display = 'block';
+
       })
       .catch(error => {
         console.error(error);
         Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
       });
   }
+  
 });
 
 // Додаємо обробник події кліку на кнопку "Load more"
 loadMoreButton.addEventListener('click', () => {
-  const searchQuery = document.querySelector('.search-form input[name="searchQuery"]').value;
 
+  const searchQuery = document.querySelector('.search-form input[name="searchQuery"]').value.trim();
+  
   if (searchQuery !== '') {
+    currentPage++;
     fetchImages(searchQuery)
       .then(data => {
         // Відображаємо додаткові зображення після отримання результатів
