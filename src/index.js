@@ -20,12 +20,13 @@ async function fetchImages(searchQuery) {
 
   try {
     const response = await axios.get(url);
-    totalHits = response.data.totalHits; // Оновлюємо загальну кількість зображень
+    // Оновлюємо загальну кількість зображень
+    totalHits = response.data.totalHits; 
     return response.data;
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 // Відображаємо зображення в галереї
 function displayImages(imagesArea) {
@@ -33,46 +34,57 @@ function displayImages(imagesArea) {
   imagesGalleryContainer.innerHTML = '';
 
   // Додаємо картки зображень до контейнера
-  imagesArea.forEach(image => {
+  imagesArea.forEach(({ largeImageURL, previewURL, tags, likes, views, comments, downloads }) => {
     const html = `
-      <a class="card-link" href="${image.largeImageURL}"><div class="photo-card">
-        <img src="${image.previewURL}" alt="${image.tags}" loading="lazy" />
+      <a class="card-link" href="${largeImageURL}"><div class="photo-card">
+        <img src="${previewURL}" alt="${tags}" loading="lazy" />
         <div class="info">
           <p class="info-item">
-            <b>Likes:</b> ${image.likes}
+            <b>Likes:</b> ${likes}
           </p>
           <p class="info-item">
-            <b>Views:</b> ${image.views}
+            <b>Views:</b> ${views}
           </p>
           <p class="info-item">
-            <b>Comments:</b> ${image.comments}
+            <b>Comments:</b> ${comments}
           </p>
           <p class="info-item">
-            <b>Downloads:</b> ${image.downloads}
+            <b>Downloads:</b> ${downloads}
           </p>
         </div>
       </div></a>`;
 
     imagesGalleryContainer.insertAdjacentHTML('beforeend', html);
 
-     
-  });
+       });
 
    const lightbox = new SimpleLightbox('.gallery a');
   lightbox.refresh();
 
-  // Перевіряємо кількість отриманих зображень та загальну кількість зображень
-  if (imagesArea.length < perPage || currentPage * perPage >= totalHits) {
+
+updateLoadMoreButton(imagesArea.length);
+
+};
+
+
+  // Перевіряємо кількість отриманих зображень та загальну кількість зображень та новлює стан кнопки "Load more"
+function updateLoadMoreButton(imagesCount) {
+  if (imagesCount < perPage || currentPage * perPage >= totalHits) {
     loadMoreButton.style.display = 'none';
-    if (currentPage === 1) {
-      Notiflix.Notify.info("We're sorry, but there are no images matching your search query.");
-    } else {
-      Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
-    }
+    displayNoImagesMessage();
   } else {
     loadMoreButton.style.display = 'block';
   }
-}
+};
+
+// Відображає повідомлення про відсутність зображень
+function displayNoImagesMessage() {
+  if (currentPage === 1) {
+    Notiflix.Notify.info("We're sorry, but there are no images matching your search query.");
+  } else {
+    Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+  }
+};
 
 // Додаємо обробник події відправки форми пошуку
 imagesSearchForm.addEventListener('submit', async evt => {
