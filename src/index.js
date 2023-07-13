@@ -14,19 +14,17 @@ let totalHits = 0;
 loadMoreButton.style.display = 'none';
 
 // Отримуємо зображення з API
-function fetchImages(searchQuery) {
+async function fetchImages(searchQuery) {
   const KEY = '38213838-3daddfe3507b21e9b34121ca2';
   const url = `https://pixabay.com/api/?key=${KEY}&q=${searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&page=${currentPage}&per_page=${perPage}`;
 
-  return axios
-    .get(url)
-    .then(response => {
-      totalHits = response.data.totalHits; // Оновлюємо загальну кількість зображень
-      return response.data;
-    })
-    .catch(error => {
-      console.log(error);
-    });
+  try {
+    const response = await axios.get(url);
+    totalHits = response.data.totalHits; // Оновлюємо загальну кількість зображень
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // Відображаємо зображення в галереї
@@ -77,7 +75,7 @@ function displayImages(imagesArea) {
 }
 
 // Додаємо обробник події відправки форми пошуку
-imagesSearchForm.addEventListener('submit', evt => {
+imagesSearchForm.addEventListener('submit', async evt => {
   evt.preventDefault();
 
   const searchQueryInput = document.querySelector('.search-form input[name="searchQuery"]');
@@ -86,36 +84,34 @@ imagesSearchForm.addEventListener('submit', evt => {
     // Приховуємо кнопку перед запитом
     loadMoreButton.style.display = 'none';
     currentPage = 1;
-    fetchImages(searchQuery)
-      .then(data => {
+   try {
+      const data = await fetchImages(searchQuery);
         // Відображаємо зображення після отримання результатів
         displayImages(data.hits);
         loadMoreButton.style.display = 'block';
 
-      })
-      .catch(error => {
+      } catch (error) {
         console.error(error);
         Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-      });
+      };
   }
   
 });
 
 // Додаємо обробник події кліку на кнопку "Load more"
-loadMoreButton.addEventListener('click', () => {
+loadMoreButton.addEventListener('click', async () => {
 
   const searchQuery = document.querySelector('.search-form input[name="searchQuery"]').value.trim();
   
   if (searchQuery !== '') {
     currentPage++;
-    fetchImages(searchQuery)
-      .then(data => {
+    try {
+      const data = await fetchImages(searchQuery);
         // Відображаємо додаткові зображення після отримання результатів
         displayImages(data.hits);
-      })
-      .catch(error => {
+      }catch (error) {
         console.error(error);
         Notiflix.Notify.failure('Sorry, there was an error while loading more images.');
-      });
+      };
   }
 });
