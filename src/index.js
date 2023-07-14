@@ -124,6 +124,7 @@ loadMoreButton.addEventListener('click', async () => {
     currentPage++;
     try {
       const data = await fetchImages(searchQuery);
+       imagesGalleryContainer.innerHTML = '';
         // Відображаємо додаткові зображення після отримання результатів
          setTimeout(() => {
           displayImages(data.hits);
