@@ -30,6 +30,7 @@ async function fetchImages(searchQuery) {
 function displayImages(imagesArea) {
   // Очищаємо контейнер галереї
   imagesGalleryContainer.innerHTML = '';
+  
 
   // Додаємо картки зображень до контейнера
   imagesArea.forEach(({ largeImageURL, previewURL, tags, likes, views, comments, downloads }) => {
@@ -60,28 +61,27 @@ function displayImages(imagesArea) {
   lightbox.refresh();
 
 
-updateLoadMoreButton(imagesArea.length, imagesArea);
-
+updateLoadMoreButton(imagesArea.length);
 
 };
 
 
-  // Перевіряємо кількість отриманих зображень та загальну кількість зображень та оновлює стан кнопки "Load more"
-function updateLoadMoreButton(imagesCount, imagesArea) {
-  if (imagesCount < perPage || currentPage * perPage >= totalHits || imagesArea.length === 0) {
-    this.loadMoreButton.style.display = 'none';
+  // Перевіряємо кількість отриманих зображень та загальну кількість зображень та новлює стан кнопки "Load more"
+function updateLoadMoreButton(imagesCount) {
+  if (imagesCount < perPage || currentPage * perPage >= totalHits) {
+    loadMoreButton.style.display = 'none';
     displayNoImagesMessage();
   } else {
-   loadMoreButton.style.display = 'block';
+    loadMoreButton.style.display = 'block';
   }
 };
 
 // Відображає повідомлення про відсутність зображень
 function displayNoImagesMessage() {
   if (currentPage === 1) {
-    Notiflix.Notify.info("We're sorry, but there are no images matching your search query.");
+    Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
   } else {
-    Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+    Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
   }
 };
 
@@ -95,19 +95,25 @@ imagesSearchForm.addEventListener('submit', async evt => {
     // Приховуємо кнопку перед запитом
     loadMoreButton.style.display = 'none';
     currentPage = 1;
-   try {
-      const data = await fetchImages(searchQuery);
-        // Відображаємо зображення після отримання результатів
-        displayImages(data.hits);
-        loadMoreButton.style.display = 'block';
 
-      } catch (error) {
-        console.error(error);
-        Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-      };
+    try {
+      const data = await fetchImages(searchQuery);
+      if (data.hits.length === 0) {
+        displayNoImagesMessage();
+      } else {
+        // Додаємо затримку на виведення зображень
+        setTimeout(() => {
+          displayImages(data.hits);
+          loadMoreButton.style.display = 'block';
+        }, 500);
+      }
+    } catch (error) {
+      console.error(error);
+      Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+    }
   }
-  
 });
+
 
 // Додаємо обробник події кліку на кнопку "Load more"
 loadMoreButton.addEventListener('click', async () => {
