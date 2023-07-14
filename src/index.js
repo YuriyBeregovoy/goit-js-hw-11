@@ -128,7 +128,9 @@ loadMoreButton.addEventListener('click', async () => {
         // Відображаємо додаткові зображення після отримання результатів
          setTimeout(() => {
           displayImages(data.hits);
-        }, 500);
+         }, 500);
+      // Додаємо прокрутку на початок
+        imagesGalleryContainer.scrollIntoView({ behavior: 'smooth' });
       }catch (error) {
         console.error(error);
         Notiflix.Notify.failure('Sorry, there was an error while loading more images.');
