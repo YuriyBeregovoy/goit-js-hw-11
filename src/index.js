@@ -18,7 +18,8 @@ async function fetchImages(searchQuery) {
 
   try {
     const response = await axios.get(url);
-    // Оновлюємо загальну кількість зображень
+
+// Оновлюємо загальну кількість зображень
     totalHits = response.data.totalHits; 
     return response.data;
   } catch (error) {
@@ -28,11 +29,11 @@ async function fetchImages(searchQuery) {
 
 // Відображаємо зображення в галереї
 function displayImages(imagesArea) {
-  // Очищаємо контейнер галереї
+
+// Очищаємо контейнер галереї
   imagesGalleryContainer.innerHTML = '';
   
-
-  // Додаємо картки зображень до контейнера
+// Додаємо картки зображень до контейнера
   imagesArea.forEach(({ largeImageURL, previewURL, tags, likes, views, comments, downloads }) => {
     const html = `
       <a class="card-link" href="${largeImageURL}"><div class="photo-card">
@@ -66,7 +67,7 @@ updateLoadMoreButton(imagesArea.length);
 };
 
 
-  // Перевіряємо кількість отриманих зображень та загальну кількість зображень та новлює стан кнопки "Load more"
+// Перевіряємо кількість отриманих зображень та загальну кількість зображень та новлює стан кнопки "Load more"
 function updateLoadMoreButton(imagesCount) {
   if (imagesCount < perPage || currentPage * perPage >= totalHits) {
     loadMoreButton.style.display = 'none';
@@ -92,7 +93,7 @@ imagesSearchForm.addEventListener('submit', async evt => {
   const searchQueryInput = document.querySelector('.search-form input[name="searchQuery"]');
   const searchQuery = searchQueryInput.value.trim();
   if (searchQuery !== '') {
-    // Приховуємо кнопку перед запитом
+// Приховуємо кнопку перед запитом
     loadMoreButton.style.display = 'none';
     currentPage = 1;
 
@@ -101,7 +102,7 @@ imagesSearchForm.addEventListener('submit', async evt => {
       if (data.hits.length === 0) {
         displayNoImagesMessage();
       } else {
-        // Додаємо затримку на виведення зображень
+// Додаємо затримку на виведення зображень
         setTimeout(() => {
           displayImages(data.hits);
           loadMoreButton.style.display = 'block';
@@ -125,11 +126,11 @@ loadMoreButton.addEventListener('click', async () => {
     try {
       const data = await fetchImages(searchQuery);
        imagesGalleryContainer.innerHTML = '';
-        // Відображаємо додаткові зображення після отримання результатів
+// Відображаємо додаткові зображення після отримання результатів
          setTimeout(() => {
           displayImages(data.hits);
          }, 500);
-      // Додаємо прокрутку на початок
+// Додаємо прокрутку на початок
         imagesGalleryContainer.scrollIntoView({ behavior: 'smooth' });
       }catch (error) {
         console.error(error);
