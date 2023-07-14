@@ -125,7 +125,9 @@ loadMoreButton.addEventListener('click', async () => {
     try {
       const data = await fetchImages(searchQuery);
         // Відображаємо додаткові зображення після отримання результатів
-        displayImages(data.hits);
+         setTimeout(() => {
+          displayImages(data.hits);
+        }, 500);
       }catch (error) {
         console.error(error);
         Notiflix.Notify.failure('Sorry, there was an error while loading more images.');
