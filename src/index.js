@@ -113,6 +113,11 @@ imagesSearchForm.addEventListener('submit', async evt => {
       console.error(error);
       Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
     }
+  } else {
+// Якщо нічого не введено, чи тільки прбіли, очищаємо сторінку та виводимо повідомлення про невідповідність вводу
+    imagesGalleryContainer.innerHTML = '';
+    Notiflix.Notify.failure('Please enter a valid search query.');
+     loadMoreButton.style.display = 'none';
   }
 });
 
