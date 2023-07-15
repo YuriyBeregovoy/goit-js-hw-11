@@ -99,12 +99,26 @@
           0px 1px 1px rgba(46, 47, 66, 0.16), 0px 2px 1px rgba(46, 47, 66, 0.08);
       }
 
+      input {
+        border: 1px solid #e7e9fc;
+        border-radius: 4px;
+      }
+
       .search-form {
         display: flex;
         justify-content: center;
         margin-top: 20px;
         margin-bottom: 20px;
         gap: 20px;
+
+        font-family: 'Roboto', 'sans-serif';
+
+        color: #434455;
+      }
+
+      .search-form input[name='searchQuery']::placeholder {
+        font-family: 'Roboto', 'sans-serif';
+        color: #e7e9fc;
       }
 
       button {
