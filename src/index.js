@@ -27,17 +27,18 @@ async function fetchImages(searchQuery) {
   }
 };
 
+// console.log(fetchImages())
+
 // Відображаємо зображення в галереї
 function displayImages(imagesArea) {
 
-// Очищаємо контейнер галереї
-  imagesGalleryContainer.innerHTML = '';
+
   
 // Додаємо картки зображень до контейнера
-  imagesArea.forEach(({ largeImageURL, previewURL, tags, likes, views, comments, downloads }) => {
+  imagesArea.forEach(({ largeImageURL, webformatURL, tags, likes, views, comments, downloads }) => {
     const html = `
       <a class="card-link" href="${largeImageURL}"><div class="photo-card">
-        <img src="${previewURL}" alt="${tags}" loading="lazy" />
+        <img src="${webformatURL}" alt="${tags}" loading="lazy" />
         <div class="info">
           <p class="info-item">
             <b>Likes:</b> ${likes}
@@ -125,13 +126,11 @@ loadMoreButton.addEventListener('click', async () => {
     currentPage++;
     try {
       const data = await fetchImages(searchQuery);
-       imagesGalleryContainer.innerHTML = '';
 // Відображаємо додаткові зображення після отримання результатів
          setTimeout(() => {
           displayImages(data.hits);
          }, 500);
 // Додаємо прокрутку на початок
-        imagesGalleryContainer.scrollIntoView({ behavior: 'smooth' });
       }catch (error) {
         console.error(error);
         Notiflix.Notify.failure('Sorry, there was an error while loading more images.');
