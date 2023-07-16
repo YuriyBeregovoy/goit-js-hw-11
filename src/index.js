@@ -68,7 +68,7 @@ updateLoadMoreButton(imagesArea.length);
 };
 
 
-// Перевіряємо кількість отриманих зображень та загальну кількість зображень та новлює стан кнопки "Load more"
+// Перевіряємо кількість отриманих зображень та загальну кількість зображень та оновлюємо стан кнопки "Load more"
 function updateLoadMoreButton(imagesCount) {
   if (imagesCount < perPage || currentPage * perPage >= totalHits) {
     loadMoreButton.style.display = 'none';
@@ -94,6 +94,11 @@ imagesSearchForm.addEventListener('submit', async evt => {
   const searchQueryInput = document.querySelector('.search-form input[name="searchQuery"]');
   const searchQuery = searchQueryInput.value.trim();
   if (searchQuery !== '') {
+
+ // Очищаємо контейнер галереї після нового submit
+imagesGalleryContainer.innerHTML = '';
+    
+
 // Приховуємо кнопку перед запитом
     loadMoreButton.style.display = 'none';
     currentPage = 1;
